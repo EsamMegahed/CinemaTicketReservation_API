@@ -9,15 +9,19 @@ urlpatterns = [
     path('django/jsonResbonseNoModel/',views.no_rest_no_model),
     # [2] - model data default django without rest
     path('django/jsonResbonseFromModel/',views.no_rest_from_model),
-    # [3.1] - Function Based View
+    # [3.1] - Function Based View GET POST
     path('django/fbv-list/',views.FBV_List),
-    # [3.2] - Function Based View
+    # [3.2] - Function Based View GET PUT DELETE
     path('django/fbv-list/<int:pk>',views.FBV_pk),
 
     # ---- End Function Based Views ----
 
     # ---- Strat Class Based Views ----
+    # [3.1] - Class Based View GET POST
+    path('django/CBV_List/',views.CBV_List.as_view()),
+    # [3.1] - Class Based View GET PUT DELETE
+    path('django/CBV_List/<int:pk>',views.CBV_pk.as_view()),
 
-    
     # ---- End Class Based Views ----
+    
 ]
