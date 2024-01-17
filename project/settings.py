@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     # RestFramework
     'rest_framework',
+    'rest_framework.authtoken',
+
 
     # My Apps 
     'tickets',
@@ -48,16 +50,17 @@ INSTALLED_APPS = [
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES':['rest_framework.authentication.BasicAuthentication'],
-    'DEFAULT_PERMISSION_CLASSES':[
-        'rest_framework.permissions.IsAuthenticated'
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES':['rest_framework.authentication.TokenAuthentication'],
+    #'DEFAULT_PERMISSION_CLASSES':[
+    #    'rest_framework.permissions.IsAuthenticated'
+    #]
 }
-SWAGGER_SETTINGS = {
-    'LOGIN_URL': 'rest_framework:login',
-    'LOGOUT_URL': 'rest_framework:logout'
-}
-
+#
+#SWAGGER_SETTINGS = {
+#    'LOGIN_URL': 'rest_framework:login',
+#    'LOGOUT_URL': 'rest_framework:logout'
+#}
+#
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

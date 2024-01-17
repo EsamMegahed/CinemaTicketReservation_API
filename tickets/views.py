@@ -8,6 +8,11 @@ from rest_framework.views import APIView
 from rest_framework import status,filters
 from .serializers import GuestSerializer,MoiveSerializer,ReservationSerializer
 from rest_framework import generics,mixins,viewsets
+from rest_framework.authentication import TokenAuthentication,BasicAuthentication
+
+from rest_framework.permissions import IsAuthenticated
+
+
 # Create your views here.
 
 # All Methods To Create View API
@@ -169,6 +174,8 @@ class GenericsPk(generics.RetrieveUpdateDestroyAPIView):
 class ViewsetsGuest(viewsets.ModelViewSet):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    #authentication_classes = [BasicAuthentication]
+    #permission_classes = [IsAuthenticated]
 
 class ViewsetsMovie(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
