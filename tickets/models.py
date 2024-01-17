@@ -16,3 +16,6 @@ class Guest(models.Model):
 class Reservation(models.Model):
     guest = models.ForeignKey(Guest,on_delete = models.CASCADE,related_name = 'reservation')
     moive = models.ForeignKey(Movie,on_delete = models.CASCADE,related_name = 'reservation')
+
+    def __str__(self) -> str:
+        return self.guest.name + "  his reserve >> " + self.moive.movie

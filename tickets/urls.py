@@ -1,6 +1,13 @@
-from django.urls import path
+from django.urls import path,include
 from. import views
+from rest_framework.routers import DefaultRouter
 
+
+router = DefaultRouter()
+
+router.register('guests',views.ViewsetsGuest)
+router.register('movie',views.ViewsetsMovie)
+router.register('reservation',views.ViewsetsReservation)
 
 urlpatterns = [
     # ---- Strat Function Based Views ----
@@ -36,8 +43,26 @@ urlpatterns = [
     # ---- Strat Generices Views ----
     # [6.1] - Generices View GET POST
     path('django/Generics/',views.GenericsList.as_view()),
-    # [6.1] - Generices View GET PUT DELETE
+    # [6.2] - Generices View GET PUT DELETE
     path('django/Generics/<int:pk>',views.GenericsPk.as_view()),
 
     # ---- End Generices Views ----
+
+    # ---- Strat Viewsets Views ----
+    # [7] - Viewsets View GET POST
+    path('django/Viewsets/',include(router.urls)),
+    
+    # ---- End Viewsets Views ----
+
+    # [8] - find movie
+    path('fbv/find-movie/',views.find_movie),
+    
+    # [9] - New Reservation
+    path('fbv/new_reservation/',views.new_reservation),
+    
+    # [10] - Api Log In or Log OUT
+    path('api-auth',include('rest_framework.urls')),
+
+
+
 ]

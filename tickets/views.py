@@ -5,9 +5,9 @@ from.models import Guest,Movie,Reservation
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status,filters
 from .serializers import GuestSerializer,MoiveSerializer,ReservationSerializer
-from rest_framework import generics,mixins
+from rest_framework import generics,mixins,viewsets
 # Create your views here.
 
 # All Methods To Create View API
@@ -158,6 +158,49 @@ class GenericsList(generics.ListCreateAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
 
+
 class GenericsPk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+
+
+# [7] - Viewsets
+#7.1 GET POST Put DELETE
+class ViewsetsGuest(viewsets.ModelViewSet):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+class ViewsetsMovie(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MoiveSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['movie']
+
+class ViewsetsReservation(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+
+
+# [8] - find movie
+@api_view(['Get'])
+def find_movie(request):
+    movie = Movie.objects.filter(movie = request.data['movie'],hall= request.data['hall'])
+    serialzer = MoiveSerializer(movie,many=True)
+    return Response(serialzer.data)
+
+
+# [9] - Create New Reservation
+@api_view(['POST'])
+def new_reservation(request):
+    movie = Movie.objects.get(movie = request.data['movie'],hall= request.data['hall'])
+    guest = Guest()
+    guest.name = request.data['name']
+    guest.phone_number = request.data['phone_number']
+    guest.save()
+
+    reservation = Reservation()
+    reservation.guest = guest
+    reservation.moive = movie
+    reservation.save()
+    return Response(status=status.HTTP_201_CREATED)
