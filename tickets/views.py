@@ -174,7 +174,7 @@ class GenericsPk(generics.RetrieveUpdateDestroyAPIView):
 class ViewsetsGuest(viewsets.ModelViewSet):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
-    #authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     #permission_classes = [IsAuthenticated]
 
 class ViewsetsMovie(viewsets.ModelViewSet):
