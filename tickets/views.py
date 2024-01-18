@@ -1,16 +1,17 @@
 from http import HTTPStatus
 from django.shortcuts import render
 from django.http.response import JsonResponse
-from.models import Guest,Movie,Reservation
+from.models import Guest,Movie,Reservation,Post
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status,filters
-from .serializers import GuestSerializer,MoiveSerializer,ReservationSerializer
+from .serializers import GuestSerializer,MoiveSerializer,ReservationSerializer,PostSerializer
 from rest_framework import generics,mixins,viewsets
 from rest_framework.authentication import TokenAuthentication,BasicAuthentication
-
 from rest_framework.permissions import IsAuthenticated
+from .premissions import IsAuthorOrReadOnly 
+
 
 
 # Create your views here.
@@ -162,11 +163,15 @@ class MixinsPk(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyM
 class GenericsList(generics.ListCreateAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    authentication_classes = [TokenAuthentication]
+
 
 
 class GenericsPk(generics.RetrieveUpdateDestroyAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    authentication_classes = [TokenAuthentication]
+
 
 
 # [7] - Viewsets
@@ -174,7 +179,7 @@ class GenericsPk(generics.RetrieveUpdateDestroyAPIView):
 class ViewsetsGuest(viewsets.ModelViewSet):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
-    authentication_classes = [TokenAuthentication]
+
     #permission_classes = [IsAuthenticated]
 
 class ViewsetsMovie(viewsets.ModelViewSet):
@@ -211,3 +216,11 @@ def new_reservation(request):
     reservation.moive = movie
     reservation.save()
     return Response(status=status.HTTP_201_CREATED)
+
+# [10] - Post Auther edidor
+class PostPk(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthorOrReadOnly]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
